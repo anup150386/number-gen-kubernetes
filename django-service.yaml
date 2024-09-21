@@ -1,0 +1,13 @@
+# django-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: django-service
+spec:
+  selector:
+    app: getro-app
+  ports:
+    - protocol: TCP
+      port: 8000  # Service port
+      targetPort: 8000  # Django's container port
+  type: ClusterIP  # Exposes internally

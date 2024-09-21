@@ -1,0 +1,7 @@
+django
+django-environ
+djangorestframework
+django-channels
+python-dotenv
+psycopg2-binary
+python-logstash

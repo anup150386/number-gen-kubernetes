@@ -1,0 +1,45 @@
+# django-deployment.yaml
+
+apiVersion : v1
+kind : Service
+metadata :
+  name : getro-app
+spec :
+  selector :
+    app : getro-app
+  type : LoadBalancer
+  ports :
+    - port : 8000
+      targetPort : 8000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: getro-app
+spec:
+  replicas: 1  # Number of replicas
+  selector:
+    matchLabels:
+      app: getro-app
+  template:
+    metadata:
+      labels:
+        app: getro-app
+    spec:
+      containers:
+      - name: getro-app
+        image: getro-web  # Replace with your Docker image
+        ports:
+        - containerPort: 8000
+        env:
+        - name: POSTGRES_DB
+          value: "getro"
+        - name: POSTGRES_USER
+          value: "postgres"
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: password
+        - name: POSTGRES_HOST
+          value: "postgres"
